@@ -910,10 +910,6 @@ function openBestPage(pageId) {
             (card.url && !card.comingSoon ? '<span style="font-size:0.78rem;font-weight:700;color:var(--accent-green);display:inline-flex;align-items:center;gap:4px;border:1.5px solid var(--accent-green);padding:6px 14px;border-radius:99px;cursor:pointer;" onclick="event.stopPropagation(); openCustomCardPage(\'' + card.cardId + '\')">View details →</span>' : '') +
           '</div>' +
         '</div>' +
-        '<div style="margin-top:14px;font-size:0.85rem;color:var(--text-muted);line-height:1.6;">' + card.description + '</div>' +
-        '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;">' +
-          card.pros.map(function(p) { return '<span style="font-size:0.72rem;padding:4px 10px;border-radius:99px;background:rgba(0,230,118,0.08);color:var(--accent-green);font-weight:600;">✓ ' + p + '</span>'; }).join('') +
-        '</div>' +
       '</div>';
     });
     cardsHTML += '</div>';
