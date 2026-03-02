@@ -231,12 +231,21 @@ function openStablePage(index) {
 }
 
 function goHome(section) {
+  // On card subpages there's no homeContent, so redirect to root
+  if (window.location.pathname.indexOf('/card/') === 0) {
+    window.location.href = '/';
+    return;
+  }
+
   const detail = document.getElementById('detailPage');
   const home = document.getElementById('homeContent');
 
   detail.classList.remove('active');
   detail.innerHTML = '';
   home.style.display = '';
+
+  history.pushState(null, '', '/');
+  document.title = 'cryptocard.gg — every crypto card, compared \u2726';
 
   // Reset sidebar active state
   document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
@@ -984,13 +993,14 @@ function getCustomCard(cardId) {
   return null;
 }
 
-function openCustomCardPage(cardId, skipHash) {
+function openCustomCardPage(cardId, skipPush) {
   var card = getCustomCard(cardId);
   if (!card) return;
 
-  if (!skipHash) {
-    history.pushState(null, '', '#card/' + cardId);
+  if (!skipPush) {
+    history.pushState({ cardId: cardId }, '', '/card/' + cardId);
   }
+  document.title = card.name + ' — cryptocard.gg';
 
   var detail = document.getElementById('detailPage');
   var home = document.getElementById('homeContent');
@@ -1035,8 +1045,13 @@ function openCustomCardPage(cardId, skipHash) {
   });
   prosConsHTML += '</div></div>';
 
+  var isCardSubpage = window.location.pathname.indexOf('/card/') === 0;
+  var backHTML = isCardSubpage
+    ? '<a href="/" class="detail-back" style="display:inline-block;text-decoration:none;color:inherit;">← Back to all cards</a>'
+    : '<button class="detail-back" onclick="openBestPage(\'best-corporate\')">← Back to corporate cards</button>';
+
   detail.innerHTML =
-    '<button class="detail-back" onclick="openBestPage(\'best-corporate\')">← Back to corporate cards</button>' +
+    backHTML +
     '<div class="detail-header">' +
       '<div class="detail-emoji-box">' + (card.img ? '<img src="' + card.img + '" alt="' + card.name + '" onerror="this.parentElement.innerHTML=\'' + card.emoji + '\'">' : card.emoji) + '</div>' +
       '<div class="detail-title-area">' +
@@ -1179,19 +1194,52 @@ searchInput.addEventListener('input', (e) => {
   }
 });
 
-// ===== HASH ROUTING =====
-function handleHashRoute() {
+// ===== ROUTING =====
+function handleRoute() {
+  var path = window.location.pathname;
+
+  // Legacy hash redirect: /#card/xyz -> /card/xyz
   var hash = window.location.hash;
-  if (hash.startsWith('#card/')) {
+  if (hash.indexOf('#card/') === 0) {
     var cardId = hash.replace('#card/', '');
+    history.replaceState(null, '', '/card/' + cardId);
     openCustomCardPage(cardId, true);
+    return;
+  }
+
+  // Path-based routing: /card/xyz
+  var match = path.match(/^\/card\/([a-z0-9-]+)\/?$/);
+  if (match) {
+    openCustomCardPage(match[1], true);
   }
 }
 
-window.addEventListener('hashchange', handleHashRoute);
+// Handle browser back/forward
+window.addEventListener('popstate', function() {
+  var path = window.location.pathname;
+  var match = path.match(/^\/card\/([a-z0-9-]+)\/?$/);
+  if (match) {
+    openCustomCardPage(match[1], true);
+  } else if (path === '/' || path === '') {
+    // Going back to home — only works on index.html (has homeContent)
+    var home = document.getElementById('homeContent');
+    var detail = document.getElementById('detailPage');
+    if (home && home.innerHTML.trim()) {
+      detail.classList.remove('active');
+      detail.innerHTML = '';
+      home.style.display = '';
+      document.title = 'cryptocard.gg \u2014 every crypto card, compared \u2726';
+      window.scrollTo({ top: 0 });
+    } else {
+      window.location.href = '/';
+    }
+  }
+});
+
+// Run on load
 if (document.readyState === 'loading') {
-  window.addEventListener('DOMContentLoaded', handleHashRoute);
+  window.addEventListener('DOMContentLoaded', handleRoute);
 } else {
-  handleHashRoute();
+  handleRoute();
 }
 
