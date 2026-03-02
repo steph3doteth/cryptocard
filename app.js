@@ -1,5 +1,27 @@
 // ===== CRYPTOCARD APP =====
 
+// ===== ANALYTICS HELPERS =====
+function trackEvent(eventName, params) {
+  if (typeof gtag === 'function') {
+    gtag('event', eventName, params);
+  }
+}
+
+// Track CTA / affiliate link clicks via event delegation
+document.addEventListener('click', function(e) {
+  var ctaBtn = e.target.closest('.detail-cta-btn');
+  if (!ctaBtn) return;
+
+  var href = ctaBtn.getAttribute('href') || '';
+  var label = ctaBtn.textContent.trim().replace(/↗/g, '').trim();
+
+  trackEvent('cta_click', {
+    link_url: href,
+    link_text: label,
+    page_location: window.location.href
+  });
+});
+
 // ===== RENDER CARDS =====
 function renderCards(filter = 'all', sort = 'cashback') {
   const grid = document.getElementById('cardGrid');
@@ -374,10 +396,19 @@ function renderComparePage() {
 }
 
 function toggleCompare(index) {
-  if (compareSelected.includes(index)) {
+  var adding = !compareSelected.includes(index);
+  if (adding) {
+    if (compareSelected.length < 3) {
+      compareSelected.push(index);
+      var card = getCompareCard(index);
+      trackEvent('compare_card_select', {
+        card_name: card.name,
+        card_issuer: card.issuer,
+        cards_compared: compareSelected.length
+      });
+    }
+  } else {
     compareSelected = compareSelected.filter(i => i !== index);
-  } else if (compareSelected.length < 3) {
-    compareSelected.push(index);
   }
   renderComparePage();
 }
