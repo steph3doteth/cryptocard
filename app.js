@@ -716,6 +716,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal()
 // ===== NEWSLETTER MODAL =====
 function openNlModal() {
   document.getElementById('nlModalOverlay').classList.add('active');
+  document.getElementById('nlSuccessMsg').style.display = 'none';
 }
 
 function closeNlModal() {
@@ -724,6 +725,13 @@ function closeNlModal() {
 
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeNlModal();
+});
+
+// Listen for Beehiiv success event
+window.addEventListener('message', function(e) {
+  if (e.data && e.data.type === 'beehiiv:success-toast') {
+    document.getElementById('nlSuccessMsg').style.display = 'block';
+  }
 });
 
 
