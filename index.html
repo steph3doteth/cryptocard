@@ -99,8 +99,8 @@
     <div class="newsletter-inline">
       <h2>don't miss<br>a drop ✦</h2>
       <p>be the first to hear about new crypto cards and rate changes.</p>
-      <form class="newsletter-inline-form" onsubmit="event.preventDefault(); var em=this.querySelector('input').value.trim(); if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em)){alert('Please enter a valid email address');return;} document.getElementById('nlEmail').value=em; openNlModal();">
-        <input type="email" placeholder="email address" required />
+      <form class="newsletter-inline-form" onsubmit="event.preventDefault(); openNlModal();">
+        <input type="email" placeholder="email address" />
         <button type="submit">sign up</button>
       </form>
     </div>
@@ -334,12 +334,7 @@
     <button class="nl-modal-close" onclick="closeNlModal()">✕</button>
     <h2>stay in the loop ✦</h2>
     <p class="nl-subtitle">Get the latest on card launches and payment news delivered straight to your inbox.</p>
-    <form id="nlForm" onsubmit="handleNlSubmit(event)">
-      <label for="nlEmail">Email</label>
-      <input type="email" id="nlEmail" placeholder="Enter your email" required />
-      <button type="submit" class="nl-submit" id="nlSubmitBtn">Subscribe</button>
-    </form>
-    <div class="nl-message" id="nlMessage"></div>
+    <iframe src="https://subscribe-forms.beehiiv.com/150ad77b-f7a5-4954-87a0-eda7a5a42126" class="beehiiv-embed" frameborder="0" scrolling="no" style="width:100%;height:160px;margin:0;border-radius:12px;background-color:transparent;"></iframe>
   </div>
 </div>
 

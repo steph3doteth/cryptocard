@@ -716,75 +716,10 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal()
 // ===== NEWSLETTER MODAL =====
 function openNlModal() {
   document.getElementById('nlModalOverlay').classList.add('active');
-  document.getElementById('nlMessage').textContent = '';
-  document.getElementById('nlSubmitBtn').disabled = false;
-  document.getElementById('nlSubmitBtn').textContent = 'Subscribe';
-  setTimeout(() => document.getElementById('nlEmail').focus(), 100);
 }
 
 function closeNlModal() {
   document.getElementById('nlModalOverlay').classList.remove('active');
-}
-
-async function handleNlSubmit(e) {
-  e.preventDefault();
-  const email = document.getElementById('nlEmail').value.trim();
-  const btn = document.getElementById('nlSubmitBtn');
-  const msg = document.getElementById('nlMessage');
-
-  if (!email) return;
-
-  // Validate email has a proper domain
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-  if (!emailPattern.test(email)) {
-    msg.textContent = 'Please enter a valid email with a proper domain (e.g. name@gmail.com)';
-    msg.className = 'nl-message error';
-    return;
-  }
-
-  btn.disabled = true;
-  btn.textContent = 'Subscribing...';
-  msg.textContent = '';
-  msg.className = 'nl-message';
-
-  try {
-    // Submit to Beehiiv via hidden iframe so the user stays on-site
-    const iframeName = 'nl_iframe_' + Date.now();
-    const iframe = document.createElement('iframe');
-    iframe.name = iframeName;
-    iframe.style.display = 'none';
-    document.body.appendChild(iframe);
-
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = 'https://cryptocard-newsletter.beehiiv.com/subscribe';
-    form.target = iframeName;
-    form.style.display = 'none';
-
-    const input = document.createElement('input');
-    input.name = 'email';
-    input.value = email;
-    form.appendChild(input);
-
-    document.body.appendChild(form);
-    form.submit();
-    document.body.removeChild(form);
-
-    // Clean up iframe after submission completes
-    setTimeout(() => iframe.remove(), 5000);
-
-    msg.textContent = '✓ Check your email to confirm!';
-    msg.className = 'nl-message success';
-    btn.textContent = 'Subscribed!';
-    document.getElementById('nlEmail').value = '';
-
-    setTimeout(() => closeNlModal(), 2500);
-  } catch (err) {
-    msg.textContent = 'Something went wrong. Try again.';
-    msg.className = 'nl-message error';
-    btn.disabled = false;
-    btn.textContent = 'Subscribe';
-  }
 }
 
 document.addEventListener('keydown', e => {
@@ -842,18 +777,6 @@ function isValidEmail(email) {
 // Inline newsletter email validation
 document.querySelector('.newsletter-inline-form input')?.addEventListener('input', function() {
   const btn = this.closest('form').querySelector('button');
-  if (isValidEmail(this.value.trim())) {
-    this.classList.add('email-valid');
-    btn.classList.add('email-ready');
-  } else {
-    this.classList.remove('email-valid');
-    btn.classList.remove('email-ready');
-  }
-});
-
-// Modal newsletter email validation
-document.getElementById('nlEmail')?.addEventListener('input', function() {
-  const btn = document.getElementById('nlSubmitBtn');
   if (isValidEmail(this.value.trim())) {
     this.classList.add('email-valid');
     btn.classList.add('email-ready');
