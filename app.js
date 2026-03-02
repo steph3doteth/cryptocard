@@ -926,7 +926,7 @@ function openBestPage(pageId) {
         '<div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">' +
           '<div style="display:flex;align-items:center;gap:16px;flex:1;min-width:200px;">' +
             '<div style="font-size:0.75rem;font-weight:800;color:var(--text-muted);width:24px;text-align:center;">' + (i + 1) + '</div>' +
-            '<span style="font-size:1.8rem;">' + card.emoji + '</span>' +
+            '<div style="width:60px;height:38px;border-radius:8px;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.4rem;">' + (card.img ? '<img src="' + card.img + '" style="width:100%;height:100%;object-fit:cover;border-radius:8px" onerror="this.parentElement.innerHTML=\'' + card.emoji + '\'">' : '<span style="font-size:1.8rem;">' + card.emoji + '</span>') + '</div>' +
             '<div style="flex:1;">' +
               '<div style="font-family:\'Nunito\',sans-serif;font-weight:800;font-size:1rem;">' + card.name + comingSoonBadge + '</div>' +
               '<div style="font-size:0.78rem;color:var(--text-muted);">' + card.issuer + ' · ' + card.regions + '</div>' +
@@ -1063,7 +1063,7 @@ function openCustomCardPage(cardId) {
   detail.innerHTML =
     '<button class="detail-back" onclick="openBestPage(\'best-corporate\')">← Back to corporate cards</button>' +
     '<div class="detail-header">' +
-      '<div class="detail-emoji-box">' + card.emoji + '</div>' +
+      '<div class="detail-emoji-box">' + (card.img ? '<img src="' + card.img + '" alt="' + card.name + '" onerror="this.parentElement.innerHTML=\'' + card.emoji + '\'">' : card.emoji) + '</div>' +
       '<div class="detail-title-area">' +
         '<h1>' + card.name + '</h1>' +
         '<div class="detail-issuer">' + card.issuer + '</div>' +
