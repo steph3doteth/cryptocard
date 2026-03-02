@@ -877,6 +877,10 @@ function openBestPage(pageId) {
   var page = bestPagesData[pageId];
   if (!page) return;
 
+  if (window.location.hash) {
+    history.pushState(null, '', window.location.pathname + window.location.search);
+  }
+
   var detail = document.getElementById('detailPage');
   var home = document.getElementById('homeContent');
 
@@ -980,9 +984,13 @@ function getCustomCard(cardId) {
   return null;
 }
 
-function openCustomCardPage(cardId) {
+function openCustomCardPage(cardId, skipHash) {
   var card = getCustomCard(cardId);
   if (!card) return;
+
+  if (!skipHash) {
+    history.pushState(null, '', '#card/' + cardId);
+  }
 
   var detail = document.getElementById('detailPage');
   var home = document.getElementById('homeContent');
@@ -1170,4 +1178,20 @@ searchInput.addEventListener('input', (e) => {
     searchResults.innerHTML = '<div style="padding:16px;color:var(--text-muted);font-size:0.85rem;text-align:center;">No results found</div>';
   }
 });
+
+// ===== HASH ROUTING =====
+function handleHashRoute() {
+  var hash = window.location.hash;
+  if (hash.startsWith('#card/')) {
+    var cardId = hash.replace('#card/', '');
+    openCustomCardPage(cardId, true);
+  }
+}
+
+window.addEventListener('hashchange', handleHashRoute);
+if (document.readyState === 'loading') {
+  window.addEventListener('DOMContentLoaded', handleHashRoute);
+} else {
+  handleHashRoute();
+}
 
