@@ -748,11 +748,17 @@ async function handleNlSubmit(e) {
   msg.className = 'nl-message';
 
   try {
-    // Use Beehiiv's public subscribe page as fallback
+    // Submit to Beehiiv via hidden iframe so the user stays on-site
+    const iframeName = 'nl_iframe_' + Date.now();
+    const iframe = document.createElement('iframe');
+    iframe.name = iframeName;
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
+
     const form = document.createElement('form');
     form.method = 'POST';
     form.action = 'https://cryptocard-newsletter.beehiiv.com/subscribe';
-    form.target = '_blank';
+    form.target = iframeName;
     form.style.display = 'none';
 
     const input = document.createElement('input');
@@ -763,6 +769,9 @@ async function handleNlSubmit(e) {
     document.body.appendChild(form);
     form.submit();
     document.body.removeChild(form);
+
+    // Clean up iframe after submission completes
+    setTimeout(() => iframe.remove(), 5000);
 
     msg.textContent = '✓ Check your email to confirm!';
     msg.className = 'nl-message success';
