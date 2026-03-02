@@ -7,11 +7,23 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&family=Lilita+One&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 
-<!-- Google Analytics (GA4) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-8774T45XR2"></script>
+<!-- Google Analytics (GA4) with Consent Mode -->
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
+
+  // Set default consent state — denied until user accepts
+  gtag('consent', 'default', {
+    analytics_storage: 'denied'
+  });
+
+  // If user previously accepted, grant immediately before gtag.js loads
+  if (localStorage.getItem('cc_consent') === 'accepted') {
+    gtag('consent', 'update', { analytics_storage: 'granted' });
+  }
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8774T45XR2"></script>
+<script>
   gtag('js', new Date());
   gtag('config', 'G-8774T45XR2');
 </script>
@@ -350,10 +362,12 @@
 function acceptCookies() {
   localStorage.setItem('cc_consent', 'accepted');
   document.getElementById('cookieConsent').style.display = 'none';
+  gtag('consent', 'update', { analytics_storage: 'granted' });
 }
 function declineCookies() {
   localStorage.setItem('cc_consent', 'declined');
   document.getElementById('cookieConsent').style.display = 'none';
+  gtag('consent', 'update', { analytics_storage: 'denied' });
 }
 // Show cookie consent if not yet responded
 if (!localStorage.getItem('cc_consent')) {
