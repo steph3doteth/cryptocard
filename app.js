@@ -905,7 +905,7 @@ function openBestPage(pageId) {
     cardsHTML = '<div style="display:flex;flex-direction:column;gap:12px;">';
     page.customCards.forEach(function(card, i) {
       var comingSoonBadge = card.comingSoon ? '<span style="font-size:0.68rem;font-weight:700;padding:3px 10px;border-radius:99px;background:rgba(255,217,61,0.2);color:#bfa600;margin-left:8px;">COMING SOON</span>' : '';
-      var clickAction = card.comingSoon ? '' : ' cursor:pointer;" onclick="openCustomCardPage(\'' + card.cardId + '\')';
+      var clickAction = card.comingSoon ? '' : ' cursor:pointer;" onclick="window.location.href=\'/card/' + card.cardId + '\'';
       cardsHTML += '<div class="detail-card" style="padding:20px 24px;' + (card.comingSoon ? 'opacity:0.7;' : '') + clickAction + '">' +
         '<div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">' +
           '<div style="display:flex;align-items:center;gap:16px;flex:1;min-width:200px;">' +
@@ -920,7 +920,7 @@ function openBestPage(pageId) {
             '<div style="text-align:center;"><div style="font-family:\'Nunito\',sans-serif;font-weight:800;font-size:1.1rem;">' + card.cashback + '</div><div style="font-size:0.65rem;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Cashback</div></div>' +
             '<div style="text-align:center;"><div style="font-size:0.85rem;font-weight:700;color:var(--text-muted);">' + card.fee + '</div><div style="font-size:0.65rem;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Fee</div></div>' +
             '<div style="text-align:center;"><div style="font-size:0.72rem;padding:4px 10px;border-radius:99px;background:var(--tag-bg);color:var(--text-muted);font-weight:600;">' + card.network + '</div><div style="font-size:0.65rem;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-top:2px;">Network</div></div>' +
-            (card.url && !card.comingSoon ? '<span style="font-size:0.78rem;font-weight:700;color:var(--accent-green);display:inline-flex;align-items:center;gap:4px;border:1.5px solid var(--accent-green);padding:6px 14px;border-radius:99px;cursor:pointer;" onclick="event.stopPropagation(); openCustomCardPage(\'' + card.cardId + '\')">View details →</span>' : '') +
+            (card.url && !card.comingSoon ? '<span style="font-size:0.78rem;font-weight:700;color:var(--accent-green);display:inline-flex;align-items:center;gap:4px;border:1.5px solid var(--accent-green);padding:6px 14px;border-radius:99px;cursor:pointer;" onclick="event.stopPropagation(); window.location.href=\'/card/' + card.cardId + '\'">View details →</span>' : '') +
           '</div>' +
         '</div>' +
       '</div>';
@@ -994,12 +994,14 @@ function getCustomCard(cardId) {
 }
 
 function openCustomCardPage(cardId, skipPush) {
+  // If not already on the card subpage, navigate to it directly
+  if (!skipPush && window.location.pathname !== '/card/' + cardId && window.location.pathname !== '/card/' + cardId + '/') {
+    window.location.href = '/card/' + cardId;
+    return;
+  }
+
   var card = getCustomCard(cardId);
   if (!card) return;
-
-  if (!skipPush) {
-    history.pushState({ cardId: cardId }, '', '/card/' + cardId);
-  }
   document.title = card.name + ' — cryptocard.gg';
 
   var detail = document.getElementById('detailPage');
@@ -1150,16 +1152,30 @@ searchInput.addEventListener('input', (e) => {
     { name: 'DAI', issuer: 'Sky (MakerDAO)', emoji: '⚗️', meta: 'USD · Decentralized' },
   ];
 
-  const matchedCards = cards.filter(c => 
-    c.name.toLowerCase().includes(q) || 
-    c.issuer.toLowerCase().includes(q) || 
+  const matchedCards = cards.filter(c =>
+    c.name.toLowerCase().includes(q) ||
+    c.issuer.toLowerCase().includes(q) ||
     c.type.toLowerCase().includes(q) ||
     c.network.toLowerCase().includes(q) ||
     c.tags.some(t => t.toLowerCase().includes(q))
   );
 
+  var allCustomCards = [];
+  for (var pageKey in bestPagesData) {
+    if (bestPagesData[pageKey].customCards) {
+      bestPagesData[pageKey].customCards.forEach(function(cc) { allCustomCards.push(cc); });
+    }
+  }
+  const matchedCustomCards = allCustomCards.filter(c =>
+    c.name.toLowerCase().includes(q) ||
+    c.issuer.toLowerCase().includes(q) ||
+    c.type.toLowerCase().includes(q) ||
+    c.network.toLowerCase().includes(q) ||
+    (c.tags && c.tags.some(t => t.toLowerCase().includes(q)))
+  );
+
   const matchedStables = stablecoins.filter(s =>
-    s.name.toLowerCase().includes(q) || 
+    s.name.toLowerCase().includes(q) ||
     s.issuer.toLowerCase().includes(q) ||
     s.meta.toLowerCase().includes(q)
   );
@@ -1168,6 +1184,18 @@ searchInput.addEventListener('input', (e) => {
     const idx = cards.indexOf(card);
     searchResults.innerHTML += `
       <div class="search-result-item" onclick="document.getElementById('searchModal').style.display='none';openModal(${idx})">
+        <span class="sr-emoji">${card.emoji}</span>
+        <div class="sr-info">
+          <div class="sr-name">${card.name}</div>
+          <div class="sr-meta">${card.cashback} cashback · ${card.fee} · ${card.type}</div>
+        </div>
+      </div>
+    `;
+  });
+
+  matchedCustomCards.forEach(card => {
+    searchResults.innerHTML += `
+      <div class="search-result-item" onclick="document.getElementById('searchModal').style.display='none';window.location.href='/card/${card.cardId}'">
         <span class="sr-emoji">${card.emoji}</span>
         <div class="sr-info">
           <div class="sr-name">${card.name}</div>
@@ -1189,7 +1217,7 @@ searchInput.addEventListener('input', (e) => {
     `;
   });
 
-  if (!matchedCards.length && !matchedStables.length) {
+  if (!matchedCards.length && !matchedCustomCards.length && !matchedStables.length) {
     searchResults.innerHTML = '<div style="padding:16px;color:var(--text-muted);font-size:0.85rem;text-align:center;">No results found</div>';
   }
 });

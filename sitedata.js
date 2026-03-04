@@ -332,7 +332,31 @@ var bestPagesData = {
     emoji: '🆓',
     intro: '$0 to get started, $0 per year. These cards prove you don\'t need to pay an annual fee to get solid crypto rewards.',
     filter: function(c) { return c.feeNum === 0; },
-    sort: function(a, b) { return b.cashbackNum - a.cashbackNum; }
+    sort: function(a, b) { return b.cashbackNum - a.cashbackNum; },
+    customCards: [
+      {
+        cardId: 'krak',
+        name: 'Krak Card',
+        issuer: 'Krak (by Kraken)',
+        emoji: '🦑',
+        img: '/Logos/G6nSGXzWMAE9Gpx.png',
+        cashback: 'Up to 1%',
+        cashbackNum: 1,
+        fee: '$0',
+        feeNum: 0,
+        network: 'Mastercard',
+        regions: '190+ countries',
+        type: 'Debit',
+        description: 'Kraken\'s answer to neobanks like Revolut. The Krak Card lets you spend from 400+ crypto and fiat assets anywhere Mastercard is accepted, with real-time conversion at checkout — no manual swaps needed. Zero transaction fees, no FX markup, and instant cashback in fiat or Bitcoin. Currently UK and EU only.',
+        pros: ['No transaction or FX fees', '400+ assets supported', 'Free physical card (coral or black)', 'Apple Pay + Google Pay', 'Free ATM withdrawals globally'],
+        cons: ['UK/EU only (no US)', 'Metal tier requires £/€50K in assets', 'Cashback excludes ATM withdrawals', 'Crypto spending is a taxable event', 'Spread applied on asset conversions'],
+        custody: 'Custodial',
+        stablecoins: '400+ assets',
+        highlights: ['⚡ Instant cashback', '🏧 Free ATM withdrawals', '2 tiers'],
+        tags: ['debit', 'custodial', 'cashback'],
+        url: 'https://www.kraken.com/krak/card'
+      }
+    ]
   },
   'best-selfcustody': {
     title: 'Best Self-Custody Cards',
