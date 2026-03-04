@@ -67,6 +67,8 @@ const web2Cards = [
 
 const allCompareCards = [...cards, ...web2Cards];
 
+// Custom cards will be appended after bestPagesData is defined (see bottom of file)
+
 
 const quizQuestions = [
   {
@@ -366,4 +368,11 @@ var bestPagesData = {
     sort: function(a, b) { return b.cashbackNum - a.cashbackNum; }
   }
 };
+
+// Append custom cards to compare list
+for (var _pk in bestPagesData) {
+  if (bestPagesData[_pk].customCards) {
+    bestPagesData[_pk].customCards.forEach(function(cc) { allCompareCards.push(cc); });
+  }
+}
 

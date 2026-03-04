@@ -307,12 +307,26 @@ function renderComparePage() {
   }).join('');
 
   // Crypto cards carousel
-  const carouselHTML = web2HTML + cards.map((c, i) => `
+  const cryptoHTML = cards.map((c, i) => `
     <div class="compare-carousel-item ${compareSelected.includes(i) ? 'selected' : ''}" onclick="toggleCompare(${i})">
       <div class="carousel-emoji">${c.img ? `<img src="${c.img}"  onerror="this.parentElement.innerHTML='${c.emoji}'">` : c.emoji}</div>
       <div class="carousel-name">${c.name}</div>
     </div>
   `).join('');
+
+  // Custom cards carousel
+  const customStartIdx = cards.length + web2Cards.length;
+  const customHTML = allCompareCards.slice(customStartIdx).map((c, i) => {
+    const idx = customStartIdx + i;
+    return `
+      <div class="compare-carousel-item ${compareSelected.includes(idx) ? 'selected' : ''}" onclick="toggleCompare(${idx})">
+        <div class="carousel-emoji">${c.img ? `<img src="${c.img}" onerror="this.parentElement.innerHTML='${c.emoji}'">` : c.emoji}</div>
+        <div class="carousel-name">${c.name}</div>
+      </div>
+    `;
+  }).join('');
+
+  const carouselHTML = web2HTML + cryptoHTML + customHTML;
 
   // 4 slots
   const slotsHTML = [0, 1, 2].map(slotIdx => {
