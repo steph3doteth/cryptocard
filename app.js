@@ -1191,10 +1191,10 @@ searchInput.addEventListener('input', (e) => {
     const idx = cards.indexOf(card);
     searchResults.innerHTML += `
       <div class="search-result-item" onclick="document.getElementById('searchModal').style.display='none';openModal(${idx})">
-        <span class="sr-emoji">${card.emoji}</span>
+        <span class="sr-emoji">${card.img ? `<img src="${card.img}" alt="${card.name}">` : card.emoji}</span>
         <div class="sr-info">
           <div class="sr-name">${card.name}</div>
-          <div class="sr-meta">${card.cashback} cashback · ${card.fee} · ${card.type}</div>
+          <div class="sr-meta">${card.issuer}</div>
         </div>
       </div>
     `;
@@ -1203,10 +1203,10 @@ searchInput.addEventListener('input', (e) => {
   matchedCustomCards.forEach(card => {
     searchResults.innerHTML += `
       <div class="search-result-item" onclick="document.getElementById('searchModal').style.display='none';window.location.href='/card/${card.cardId}'">
-        <span class="sr-emoji">${card.emoji}</span>
+        <span class="sr-emoji">${card.img ? `<img src="${card.img}" alt="${card.name}">` : card.emoji}</span>
         <div class="sr-info">
           <div class="sr-name">${card.name}</div>
-          <div class="sr-meta">${card.cashback} cashback · ${card.fee} · ${card.type}</div>
+          <div class="sr-meta">${card.issuer}</div>
         </div>
       </div>
     `;
