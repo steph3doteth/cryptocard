@@ -990,6 +990,10 @@ function getCustomCard(cardId) {
       }
     }
   }
+  // Also search main cards array
+  for (var j = 0; j < cards.length; j++) {
+    if (cards[j].cardId === cardId) return cards[j];
+  }
   return null;
 }
 
