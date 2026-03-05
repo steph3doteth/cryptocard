@@ -1724,9 +1724,9 @@
   .nl-modal {
     background: #fff;
     border-radius: 20px;
-    padding: 36px;
+    padding: 28px 36px 12px;
     width: 90%;
-    max-width: 560px;
+    max-width: 480px;
     position: relative;
     box-shadow: 0 20px 60px rgba(0,0,0,0.2);
   }
