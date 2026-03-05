@@ -1128,11 +1128,19 @@ const searchModal = document.getElementById('searchModal');
 const searchInput = document.getElementById('searchInput');
 const searchResults = document.getElementById('searchResults');
 
+function openSearch() {
+  searchModal.style.display = 'flex';
+  searchInput.value = '';
+  showDefaultSearchCards();
+  setTimeout(() => searchInput.focus(), 50);
+}
+
 // Cmd+K / Ctrl+K shortcut
 document.addEventListener('keydown', e => {
   if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
     e.preventDefault();
     searchModal.style.display = 'flex';
+    showDefaultSearchCards();
     setTimeout(() => searchInput.focus(), 50);
   }
   if (e.key === 'Escape' && searchModal.style.display === 'flex') {
@@ -1142,10 +1150,29 @@ document.addEventListener('keydown', e => {
   }
 });
 
+function showDefaultSearchCards() {
+  var top9 = [...cards].sort((a, b) => b.cashbackNum - a.cashbackNum).slice(0, 9);
+  searchResults.className = 'search-results grid-view';
+  searchResults.innerHTML = '';
+  top9.forEach(card => {
+    const idx = cards.indexOf(card);
+    searchResults.innerHTML += `
+      <div class="search-result-item" onclick="document.getElementById('searchModal').style.display='none';openModal(${idx})">
+        <span class="sr-emoji">${card.img ? `<img src="${card.img}" alt="${card.name}">` : card.emoji}</span>
+        <div class="sr-info">
+          <div class="sr-name">${card.name}</div>
+          <div class="sr-meta">${card.issuer}</div>
+        </div>
+      </div>
+    `;
+  });
+}
+
 searchInput.addEventListener('input', (e) => {
   const q = e.target.value.toLowerCase().trim();
+  searchResults.className = 'search-results';
   searchResults.innerHTML = '';
-  if (!q) return;
+  if (!q) { showDefaultSearchCards(); return; }
 
   const stablecoins = [
     { name: 'USDC', issuer: 'Circle', emoji: '🔵', meta: 'USD · Safe default' },
