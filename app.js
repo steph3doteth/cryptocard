@@ -785,14 +785,17 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeNlModal();
 });
 
-// Listen for any Beehiiv postMessage event
+// Listen for Beehiiv postMessage events
 window.addEventListener('message', function(e) {
-  // Log all messages from beehiiv to help debug
   if (e.origin && e.origin.includes('beehiiv')) {
     console.log('Beehiiv message:', e.data);
-    var embed = document.getElementById('nlBeehiivEmbed');
-    if (embed) embed.style.display = 'none';
-    document.getElementById('nlSuccessMsg').style.display = 'block';
+    // Only trigger on subscription success, not iframe load
+    var d = e.data;
+    if (d && (d.type === 'beehiiv:success-toast' || d.type === 'beehiiv:subscribe' || (typeof d === 'string' && d.includes('success')))) {
+      var embed = document.getElementById('nlBeehiivEmbed');
+      if (embed) embed.style.display = 'none';
+      document.getElementById('nlSuccessMsg').style.display = 'block';
+    }
   }
 });
 
