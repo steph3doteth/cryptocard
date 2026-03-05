@@ -769,12 +769,14 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal()
 // ===== NEWSLETTER MODAL =====
 function openNlModal() {
   document.getElementById('nlModalOverlay').classList.add('active');
-  var embed = document.getElementById('nlBeehiivEmbed');
-  if (embed && embed.style.display === 'none') {
-    embed.src = embed.src;
-    embed.style.display = '';
-  }
   document.getElementById('nlSuccessMsg').style.display = 'none';
+  var embed = document.getElementById('nlBeehiivEmbed');
+  if (embed) {
+    if (embed.style.display === 'none' || !embed.offsetParent) {
+      embed.style.display = 'block';
+      embed.src = embed.src;
+    }
+  }
 }
 
 function closeNlModal() {
