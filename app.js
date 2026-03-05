@@ -771,11 +771,10 @@ function openNlModal() {
   document.getElementById('nlModalOverlay').classList.add('active');
   document.getElementById('nlSuccessMsg').style.display = 'none';
   var embed = document.getElementById('nlBeehiivEmbed');
-  if (embed) {
-    if (embed.style.display === 'none' || !embed.offsetParent) {
-      embed.style.display = 'block';
-      embed.src = embed.src;
-    }
+  if (embed && embed.style.display === 'none') {
+    embed.style.display = 'block';
+    embed.style.height = '120px';
+    embed.src = embed.src;
   }
 }
 
