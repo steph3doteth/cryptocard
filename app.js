@@ -1,5 +1,14 @@
 // ===== CRYPTOCARD APP =====
 
+// ===== NEWSLETTER SUBMIT =====
+function submitNewsletter(e) {
+  e.preventDefault();
+  var email = document.getElementById('inlineEmail').value;
+  if (!email) return;
+  window.open('https://subscribe-forms.beehiiv.com/150ad77b-f7a5-4954-87a0-eda7a5a42126?email=' + encodeURIComponent(email), '_blank');
+  document.getElementById('inlineEmail').value = '';
+}
+
 // ===== ANALYTICS HELPERS =====
 function trackEvent(eventName, params) {
   if (typeof gtag === 'function') {

@@ -102,7 +102,10 @@
     <div class="newsletter-inline">
       <h2>don't miss<br>a drop ✦</h2>
       <p>be the first to hear about new crypto cards and rate changes.</p>
-      <iframe src="https://subscribe-forms.beehiiv.com/150ad77b-f7a5-4954-87a0-eda7a5a42126" class="beehiiv-inline" frameborder="0" scrolling="no" style="width:100%;height:52px;margin:0;border-radius:12px;background-color:transparent;"></iframe>
+      <form class="newsletter-inline-form" onsubmit="submitNewsletter(event)">
+        <input type="email" id="inlineEmail" placeholder="your@email.com" required />
+        <button type="submit">Subscribe</button>
+      </form>
     </div>
 
     <div class="filters-row">
