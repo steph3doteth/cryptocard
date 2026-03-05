@@ -1153,7 +1153,7 @@ document.addEventListener('keydown', e => {
 function showDefaultSearchCards() {
   var top9 = [...cards].sort((a, b) => b.cashbackNum - a.cashbackNum).slice(0, 9);
   searchResults.className = 'search-results grid-view';
-  searchResults.innerHTML = '';
+  searchResults.innerHTML = '<div class="search-section-label">Top Cards</div>';
   top9.forEach(card => {
     const idx = cards.indexOf(card);
     searchResults.innerHTML += `

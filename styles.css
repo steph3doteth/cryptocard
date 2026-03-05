@@ -1879,6 +1879,18 @@
     gap: 4px;
   }
 
+  .search-section-label {
+    grid-column: 1 / -1;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    padding: 8px 12px 4px;
+    text-align: left;
+  }
+
   .search-result-item {
     display: flex;
     align-items: center;
