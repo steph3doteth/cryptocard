@@ -59,9 +59,12 @@
     <a href="https://www.tiktok.com/@st3ph.xyz" target="_blank">
       <span class="nav-icon">📱</span> TikTok
     </a>
-    <a href="#" onclick="openNlModal(); return false;">
+    <a href="#" onclick="document.getElementById('sidebarNl').style.display = document.getElementById('sidebarNl').style.display === 'block' ? 'none' : 'block'; return false;">
       <span class="nav-icon">✉️</span> Newsletter
     </a>
+    <div id="sidebarNl" style="display:none;padding:8px 12px;">
+      <iframe src="https://subscribe-forms.beehiiv.com/150ad77b-f7a5-4954-87a0-eda7a5a42126" frameborder="0" scrolling="no" style="width:100%;height:52px;border-radius:8px;background-color:transparent;"></iframe>
+    </div>
   </div>
 </aside>
 
