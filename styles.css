@@ -362,19 +362,20 @@
 
   .newsletter-inline {
     max-width: 400px;
+    min-width: 280px;
   }
 
   .newsletter-inline h2 {
     font-family: 'Nunito', sans-serif;
     font-weight: 800;
-    font-size: 1.8rem;
+    font-size: 2.4rem;
     letter-spacing: -0.5px;
     line-height: 1.05;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
   }
 
   .newsletter-inline p {
-    font-size: 0.85rem;
+    font-size: 1.05rem;
     color: var(--text-muted);
     margin-bottom: 14px;
     line-height: 1.5;

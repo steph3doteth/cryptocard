@@ -1,12 +1,47 @@
 // ===== CRYPTOCARD APP =====
 
 // ===== NEWSLETTER SUBMIT =====
+function submitBeehiivEmail(email, successCb) {
+  var formUrl = 'https://subscribe-forms.beehiiv.com/150ad77b-f7a5-4954-87a0-eda7a5a42126';
+  var formData = new FormData();
+  formData.append('email', email);
+
+  fetch(formUrl, {
+    method: 'POST',
+    body: formData,
+    mode: 'no-cors'
+  }).then(function() {
+    if (successCb) successCb();
+  }).catch(function() {
+    if (successCb) successCb();
+  });
+}
+
 function submitNewsletter(e) {
   e.preventDefault();
-  var email = document.getElementById('inlineEmail').value;
-  if (!email) return;
-  window.open('https://subscribe-forms.beehiiv.com/150ad77b-f7a5-4954-87a0-eda7a5a42126?email=' + encodeURIComponent(email), '_blank');
-  document.getElementById('inlineEmail').value = '';
+  var input = document.getElementById('inlineEmail');
+  if (!input.value) return;
+  var btn = e.target.querySelector('button');
+  btn.textContent = 'Sending...';
+  submitBeehiivEmail(input.value, function() {
+    input.value = '';
+    btn.textContent = 'Subscribed!';
+    setTimeout(function() { btn.textContent = 'Subscribe'; }, 3000);
+  });
+}
+
+function submitNlModal(e) {
+  e.preventDefault();
+  var input = document.getElementById('nlModalEmail');
+  if (!input.value) return;
+  var btn = e.target.querySelector('button');
+  btn.textContent = 'Sending...';
+  submitBeehiivEmail(input.value, function() {
+    input.value = '';
+    btn.textContent = 'Subscribe';
+    document.getElementById('nlSuccessMsg').style.display = 'block';
+    setTimeout(function() { document.getElementById('nlSuccessMsg').style.display = 'none'; }, 5000);
+  });
 }
 
 // ===== ANALYTICS HELPERS =====
@@ -734,6 +769,11 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal()
 // ===== NEWSLETTER MODAL =====
 function openNlModal() {
   document.getElementById('nlModalOverlay').classList.add('active');
+  var embed = document.getElementById('nlBeehiivEmbed');
+  if (embed && embed.style.display === 'none') {
+    embed.src = embed.src;
+    embed.style.display = '';
+  }
   document.getElementById('nlSuccessMsg').style.display = 'none';
 }
 
@@ -745,9 +785,13 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeNlModal();
 });
 
-// Listen for Beehiiv success event
+// Listen for any Beehiiv postMessage event
 window.addEventListener('message', function(e) {
-  if (e.data && e.data.type === 'beehiiv:success-toast') {
+  // Log all messages from beehiiv to help debug
+  if (e.origin && e.origin.includes('beehiiv')) {
+    console.log('Beehiiv message:', e.data);
+    var embed = document.getElementById('nlBeehiivEmbed');
+    if (embed) embed.style.display = 'none';
     document.getElementById('nlSuccessMsg').style.display = 'block';
   }
 });

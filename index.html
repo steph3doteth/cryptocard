@@ -59,12 +59,9 @@
     <a href="https://www.tiktok.com/@st3ph.xyz" target="_blank">
       <span class="nav-icon">📱</span> TikTok
     </a>
-    <a href="#" onclick="document.getElementById('sidebarNl').style.display = document.getElementById('sidebarNl').style.display === 'block' ? 'none' : 'block'; return false;">
+    <a href="#" onclick="openNlModal(); return false;">
       <span class="nav-icon">✉️</span> Newsletter
     </a>
-    <div id="sidebarNl" style="display:none;padding:8px 12px;">
-      <iframe src="https://subscribe-forms.beehiiv.com/150ad77b-f7a5-4954-87a0-eda7a5a42126" frameborder="0" scrolling="no" style="width:100%;height:52px;border-radius:8px;background-color:transparent;"></iframe>
-    </div>
   </div>
 </aside>
 
@@ -100,12 +97,8 @@
   <!-- TOP BAR -->
   <div class="top-bar">
     <div class="newsletter-inline">
-      <h2>don't miss<br>a drop ✦</h2>
-      <p>be the first to hear about new crypto cards and rate changes.</p>
-      <form class="newsletter-inline-form" onsubmit="submitNewsletter(event)">
-        <input type="email" id="inlineEmail" placeholder="your@email.com" required />
-        <button type="submit">Subscribe</button>
-      </form>
+      <h2><span style="white-space:nowrap;">The Crypto Card</span><br>Cheat Sheet</h2>
+      <p>Find the card that fits how you spend.</p>
     </div>
 
     <div class="filters-row">
@@ -337,8 +330,9 @@
     <button class="nl-modal-close" onclick="closeNlModal()">✕</button>
     <h2>stay in the loop ✦</h2>
     <p class="nl-subtitle">Get the latest on card launches and payment news delivered straight to your inbox.</p>
-    <iframe src="https://subscribe-forms.beehiiv.com/150ad77b-f7a5-4954-87a0-eda7a5a42126" class="beehiiv-embed" frameborder="0" scrolling="no" style="width:100%;height:315px;margin:0;border-radius:12px;background-color:transparent;"></iframe>
-    <div id="nlSuccessMsg" style="display:none;text-align:center;padding:14px 0 0;font-size:0.88rem;color:var(--accent-green);font-weight:700;">Thanks for signing up! Check your email to confirm your subscription.</div>
+    <script async src="https://subscribe-forms.beehiiv.com/embed.js"></script>
+    <iframe id="nlBeehiivEmbed" src="https://subscribe-forms.beehiiv.com/6b0a6bbe-ee0a-4df6-a1d1-30dcaac17e5f" class="beehiiv-embed" data-test-id="beehiiv-embed" frameborder="0" scrolling="no" style="width:100%;height:207px;margin:16px 0 0;border-radius:0;background-color:transparent;box-shadow:none;max-width:100%;"></iframe>
+    <div id="nlSuccessMsg" style="display:none;text-align:center;padding:24px 0;font-size:1.1rem;color:var(--accent-green);font-weight:800;">Thanks for signing up! ✦</div>
   </div>
 </div>
 
