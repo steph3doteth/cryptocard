@@ -120,10 +120,19 @@ function renderCards(filter = 'all', sort = 'cashback') {
 
 // ===== DETAIL PAGE =====
 
+function cardToSlug(name) {
+  return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+}
+
 function openCardPage(index) {
   const card = cards[index];
   const detail = document.getElementById('detailPage');
   const home = document.getElementById('homeContent');
+
+  // Update URL to card SEO path
+  var slug = cardToSlug(card.name);
+  history.pushState({ cardIndex: index }, card.name + ' | cryptocard.gg', '/card/' + slug);
+  document.title = card.name + ' — ' + card.issuer + ' | cryptocard.gg';
 
   detail.innerHTML = `
     <button class="detail-back" onclick="goHome()">← Back to cards</button>

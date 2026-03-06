@@ -16,6 +16,7 @@ const cardLinks = {
   "Ready Card": { url: "https://www.ready.co", label: "Get your card" },
   "RedotPay": { url: "https://www.redotpay.com", label: "Get your card" },
   "Solflare Card": { url: "https://www.solflare.com/crypto-card/", label: "Get your card" },
+  "Krak Card": { url: "https://www.kraken.com/krak/card", label: "Get your card" },
 };
 
 const stablecoinsData = [
