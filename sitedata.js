@@ -66,29 +66,6 @@ const web2Cards = [
   }
 ];
 
-// Add Krak card to main cards array so it appears on homepage grid
-cards.push({
-  cardId: 'krak',
-  name: 'Krak Card',
-  issuer: 'Krak (by Kraken)',
-  emoji: '🦑',
-  img: '/Logos/G6nSGXzWMAE9Gpx.png',
-  cashback: 'Up to 1%',
-  cashbackNum: 1,
-  fee: '$0',
-  feeNum: 0,
-  network: 'mastercard',
-  regions: '190+ countries',
-  type: 'debit',
-  description: 'Kraken\'s answer to neobanks like Revolut. The Krak Card lets you spend from 400+ crypto and fiat assets anywhere Mastercard is accepted, with real-time conversion at checkout — no manual swaps needed. Zero transaction fees, no FX markup, and instant cashback in fiat or Bitcoin. Currently UK and EU only.',
-  pros: ['No transaction or FX fees', '400+ assets supported', 'Free physical card (coral or black)', 'Apple Pay + Google Pay', 'Free ATM withdrawals globally'],
-  cons: ['UK/EU only (no US)', 'Metal tier requires £/€50K in assets', 'Cashback excludes ATM withdrawals'],
-  custody: 'Custodial',
-  stablecoins: '400+ assets',
-  highlights: ['⚡ Instant cashback', '🏧 Free ATM withdrawals'],
-  tags: ['debit', 'custodial', 'cashback']
-});
-
 const allCompareCards = [...cards, ...web2Cards];
 
 
